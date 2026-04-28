@@ -1,4 +1,10 @@
+# env files
+.env
+.env.*
+frontend/.env*
+
 backend/.venv
+backend/__pycache__
 frontend/node_modules
 frontend/.pnp
 frontend/.pnp.*
@@ -27,9 +33,6 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 frontend/.pnpm-debug.log*
-
-# env files 
-frontend/.env*
 
 # vercel
 frontend/.vercel
