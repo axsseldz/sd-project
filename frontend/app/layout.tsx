@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DevOps Task Simulator",
+  title: "Orbit — Simulador DevOps",
   description:
-    "AI-powered middleware that translates natural language into executable DevOps scripts and commands.",
+    "Traduce lenguaje natural a scripts DevOps ejecutables. Previsualiza, aprueba y observa cómo corren.",
 };
 
 export default function RootLayout({
@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased selection:bg-zinc-700 selection:text-zinc-100">
+    <html lang="es" className="dark">
+      <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased selection:bg-emerald-400/30 selection:text-zinc-50">
         {children}
       </body>
     </html>
