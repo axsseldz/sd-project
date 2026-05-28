@@ -1,0 +1,626 @@
+\documentclass[12pt,a4paper]{article}
+
+% ============================================================
+% PAQUETES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage[a4paper,margin=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath,amssymb}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage{listings}
+
+% ============================================================
+% COLORES Y ESTILOS
+% ============================================================
+\definecolor{azulCobalto}{HTML}{1F3A93}
+\definecolor{azulClaro}{HTML}{4A6FA5}
+\definecolor{grisSuave}{HTML}{F2F4F8}
+\definecolor{grisOscuro}{HTML}{3A3A3A}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azulCobalto,
+    urlcolor=azulCobalto,
+    citecolor=azulCobalto,
+    pdftitle={Reporte del proyecto - Orbit DevOps Task Simulator},
+    pdfauthor={Axel Tadeo Diaz Flores},
+    pdfsubject={Sistemas Distribuidos},
+    pdfkeywords={DevOps, lenguaje natural, OpenAI, Flask, Next.js, SSE}
+}
+
+% Formato de secciones
+\titleformat{\section}
+    {\color{azulCobalto}\Large\bfseries}
+    {\thesection.}{0.6em}{}
+\titleformat{\subsection}
+    {\color{azulClaro}\large\bfseries}
+    {\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+    {\color{grisOscuro}\normalsize\bfseries}
+    {}{0em}{}
+
+\titlespacing*{\section}{0pt}{1.4em}{0.6em}
+\titlespacing*{\subsection}{0pt}{1em}{0.4em}
+
+% Encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{azulCobalto}{\small\textbf{Sistemas Distribuidos}}}
+\fancyhead[R]{\textcolor{grisOscuro}{\small Orbit --- Simulador de tareas DevOps}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{azulClaro}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
+
+% Configuración de listas
+\setlist[itemize]{leftmargin=1.5em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=2pt,topsep=4pt}
+
+% Espaciado
+\setlength{\parskip}{0.6em}
+\setlength{\parindent}{0pt}
+\onehalfspacing
+
+% Caja informativa
+\newtcolorbox{cajainfo}[1][]{
+    colback=grisSuave,
+    colframe=azulCobalto,
+    boxrule=0.6pt,
+    arc=2mm,
+    left=8pt,right=8pt,top=6pt,bottom=6pt,
+    #1
+}
+
+% Estilo para bloques de código
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{grisSuave},
+    frame=single,
+    rulecolor=\color{azulClaro},
+    breaklines=true,
+    showstringspaces=false,
+    keywordstyle=\color{azulCobalto}\bfseries,
+    commentstyle=\color{grisOscuro}\itshape,
+    stringstyle=\color{azulClaro},
+    language=Python,
+    numbers=left,
+    numberstyle=\tiny\color{grisOscuro},
+    xleftmargin=1.5em,
+    framexleftmargin=1.5em
+}
+
+\begin{document}
+
+% ============================================================
+% PORTADA
+% ============================================================
+\begin{titlepage}
+\thispagestyle{empty}
+
+\noindent
+\begin{minipage}{0.5\textwidth}
+    \IfFileExists{facultad.jpg}{\includegraphics[width=3cm]{facultad.jpg}}{%
+        \fbox{\parbox[c][3cm][c]{3cm}{\centering\small Facultad de\\ Ciencias}}}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+    \raggedleft
+    \IfFileExists{uabc.png}{\includegraphics[width=3cm]{uabc.png}}{%
+        \fbox{\parbox[c][3cm][c]{3cm}{\centering\small UABC}}}
+\end{minipage}
+
+\vspace{1cm}
+
+\begin{center}
+\textcolor{azulClaro}{\rule{0.85\textwidth}{1.2pt}}
+
+\vspace{0.3cm}
+
+{\large\textsc{Universidad Autónoma de Baja California}}\\[0.2cm]
+{\normalsize Facultad de Ciencias}
+
+\vspace{0.3cm}
+
+\textcolor{azulClaro}{\rule{0.85\textwidth}{0.6pt}}
+
+\vspace{1cm}
+
+{\Large\textbf{Sistemas Distribuidos}}
+
+\vspace{2.5cm}
+
+{\Huge\bfseries\textcolor{azulCobalto}{Simulador de tareas técnicas para gestión de infraestructura Dev-Ops}}\\[0.5cm]
+
+\vspace{3cm}
+
+\begin{tabular}{rl}
+\textbf{Integrantes:} & Cristian Adrian Vargas Arredondo \\
+                 & Jesus Antonio Sauceda Cazares \\
+                 & Francisco Gabriel Parga Torres \\
+                 & Axel Tadeo Díaz Flores \\[0.4em]
+\textbf{Docentes:}    & Mary Sol Aguirre Arzate \\[0.4em]
+\textbf{Fecha:}       & Mayo 2026 \\
+\end{tabular}
+
+\vfill
+
+\textcolor{azulClaro}{\rule{0.85\textwidth}{1.2pt}}\\[0.2cm]
+{\footnotesize Ensenada, Baja California --- Semestre 2026-1}
+\end{center}
+
+\end{titlepage}
+
+% ============================================================
+% ÍNDICE
+% ============================================================
+\tableofcontents
+\newpage
+
+% ============================================================
+% 1. INTRODUCCIÓN
+% ============================================================
+\section{Introducción}
+
+El presente reporte documenta el desarrollo de \textbf{Orbit}, un simulador de
+tareas técnicas para la gestión de infraestructura DevOps. El proyecto consiste
+en un \textit{middleware} potenciado por inteligencia artificial cuyo objetivo
+es traducir instrucciones expresadas en lenguaje natural a artefactos
+ejecutables concretos: comandos o \textit{scripts} de shell (Bash/POSIX) y
+consultas SQL.
+
+La motivación del sistema parte de un problema recurrente en la administración
+de sistemas y la automatización: existe una brecha entre la \textit{intención}
+de alto nivel del operador (``muéstrame los procesos que más memoria consumen'')
+y el \textit{comando} de bajo nivel que la materializa
+(\texttt{ps aux | sort -k4 -rn | head}). Orbit busca cerrar esa brecha,
+permitiendo que un usuario describa lo que desea lograr y reciba a cambio un
+artefacto listo para revisar y ejecutar, junto con una explicación técnica
+breve.
+
+A diferencia de un simple generador de texto, Orbit implementa un flujo
+completo de tres fases —\textbf{Generar}, \textbf{Revisar/Refinar} y
+\textbf{Ejecutar}— con \textit{streaming} de resultados en tiempo real y un
+conjunto de salvaguardas de seguridad que evitan la ejecución de comandos
+potencialmente destructivos.
+
+\begin{cajainfo}
+\textbf{En una frase:} Orbit convierte lenguaje natural en \textit{scripts}
+DevOps ejecutables, los somete a revisión humana y validación de seguridad, y
+los ejecuta en un \textit{subproceso} controlado mostrando la salida paso a
+paso.
+\end{cajainfo}
+
+% ============================================================
+% 2. OBJETIVOS
+% ============================================================
+\section{Objetivos del proyecto}
+
+\subsection{Objetivo general}
+
+Diseñar e implementar un sistema cliente-servidor que, mediante un modelo de
+lenguaje, traduzca instrucciones en lenguaje natural a comandos o consultas
+ejecutables, ofreciendo un flujo seguro de generación, refinamiento y ejecución
+con retroalimentación visual en tiempo real.
+
+\subsection{Objetivos específicos}
+
+\begin{itemize}
+    \item Construir una API REST en Flask que exponga las operaciones de
+    generación, refinamiento y ejecución de \textit{scripts}.
+    \item Integrar un modelo de lenguaje de OpenAI mediante \textit{prompts} de
+    sistema estrictos que garanticen una salida estructurada en formato JSON.
+    \item Implementar un motor de ejecución local con validaciones de seguridad
+    y verificación previa de la disponibilidad de las herramientas requeridas.
+    \item Transmitir el progreso de la ejecución en tiempo real al cliente
+    mediante \textit{Server-Sent Events} (SSE).
+    \item Desarrollar una interfaz web moderna en Next.js con estética de
+    terminal, animaciones fluidas y una máquina de estados que modele el flujo
+    de la aplicación.
+\end{itemize}
+
+% ============================================================
+% 3. DESCRIPCIÓN GENERAL
+% ============================================================
+\section{Descripción general del sistema}
+
+Orbit se compone de dos aplicaciones independientes que se comunican mediante
+HTTP:
+
+\begin{itemize}
+    \item Un \textbf{backend} en Python/Flask que actúa como cerebro del
+    sistema: recibe las peticiones, dialoga con el modelo de lenguaje, valida la
+    seguridad de los \textit{scripts} y los ejecuta en la máquina anfitriona.
+    \item Un \textbf{frontend} en Next.js que provee la experiencia de usuario:
+    captura la instrucción, presenta el \textit{script} propuesto, permite
+    refinarlo o aprobarlo, y renderiza la ejecución y sus resultados.
+\end{itemize}
+
+El sistema está diseñado para correr de forma local sobre macOS, empleando un
+shell Bash con utilidades POSIX/BSD. Las consultas SQL se ejecutan de manera
+simulada (\textit{mock}), pues no hay una base de datos conectada; esto permite
+completar el flujo de la interfaz sin efectos colaterales.
+
+% ============================================================
+% 4. STACK TECNOLÓGICO
+% ============================================================
+\section{Stack tecnológico}
+
+A continuación se detallan las tecnologías empleadas en cada capa del sistema,
+con las versiones efectivamente utilizadas en el proyecto.
+
+\subsection{Backend}
+
+\begin{itemize}
+    \item \textbf{Lenguaje:} Python 3.x.
+    \item \textbf{Framework web:} Flask, para exponer la API REST y el
+    \textit{streaming} mediante SSE.
+    \item \textbf{CORS:} \texttt{flask-cors}, configurado para aceptar
+    peticiones desde \texttt{http://localhost:3000}.
+    \item \textbf{Variables de entorno:} \texttt{python-dotenv}, que carga el
+    archivo \texttt{.env} ubicado en la raíz del proyecto.
+    \item \textbf{Integración de IA:} SDK oficial de OpenAI (\texttt{openai}),
+    con el modelo \texttt{gpt-4o-mini} por defecto.
+    \item \textbf{Ejecución:} módulos estándar \texttt{subprocess},
+    \texttt{shutil} y \texttt{re} para correr, validar e inspeccionar los
+    \textit{scripts}.
+\end{itemize}
+
+\subsection{Frontend}
+
+\begin{itemize}
+    \item \textbf{Framework:} Next.js 16 (App Router).
+    \item \textbf{Biblioteca de UI:} React 19.
+    \item \textbf{Lenguaje:} TypeScript 5.
+    \item \textbf{Estilos:} Tailwind CSS v4.
+    \item \textbf{Animaciones:} Framer Motion 12.
+    \item \textbf{Iconografía:} Lucide React.
+    \item \textbf{Composición de clases:} \texttt{clsx} y \texttt{tailwind-merge},
+    combinados en la utilidad \texttt{cn(...)}.
+\end{itemize}
+
+\subsection{Inteligencia artificial}
+
+\begin{itemize}
+    \item \textbf{Proveedor:} OpenAI.
+    \item \textbf{Modelo por defecto:} \texttt{gpt-4o-mini}, configurable
+    mediante la variable de entorno \texttt{OPENAI\_MODEL}.
+    \item \textbf{Formato de respuesta:} modo JSON
+    (\texttt{response\_format: json\_object}) con temperatura \texttt{0.2} para
+    favorecer salidas deterministas y consistentes.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Resumen del stack tecnológico por capa.}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Capa} & \textbf{Tecnología} & \textbf{Propósito} \\
+\midrule
+Backend   & Python 3 / Flask        & API REST y motor de ejecución \\
+Backend   & flask-cors              & Política de origen cruzado \\
+Backend   & python-dotenv           & Carga de variables de entorno \\
+Backend   & openai                  & Cliente del modelo de lenguaje \\
+IA        & gpt-4o-mini             & Traducción de lenguaje natural a código \\
+Frontend  & Next.js 16 / React 19   & Aplicación web y enrutamiento \\
+Frontend  & TypeScript 5            & Tipado estático \\
+Frontend  & Tailwind CSS v4         & Sistema de estilos \\
+Frontend  & Framer Motion           & Animaciones e interacciones \\
+Frontend  & Lucide React            & Iconos \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ============================================================
+% 5. ARQUITECTURA
+% ============================================================
+\section{Arquitectura y estructura del proyecto}
+
+El repositorio se organiza en dos directorios principales, además del archivo de
+configuración de entorno en la raíz.
+
+\subsection{Estructura de directorios}
+
+\begin{itemize}
+    \item \texttt{/backend}: lógica de la aplicación Flask.
+    \begin{itemize}
+        \item \texttt{app.py}: punto de entrada, rutas de la API, motor de
+        ejecución y verificaciones de seguridad. Corre en el puerto
+        \texttt{8000}.
+        \item \texttt{requirements.txt}: dependencias de Python
+        (\texttt{flask}, \texttt{flask-cors}, \texttt{python-dotenv},
+        \texttt{openai}).
+    \end{itemize}
+    \item \texttt{/frontend}: aplicación Next.js.
+    \begin{itemize}
+        \item \texttt{/app}: páginas y \textit{layouts} (App Router). La página
+        principal \texttt{page.tsx} contiene una máquina de estados basada en
+        fases.
+        \item \texttt{/components}: componentes de interfaz modulares.
+        \item \texttt{/lib}: utilidades compartidas —\texttt{cn.ts} (fusión de
+        clases) y \texttt{api.ts} (cliente HTTP tipado con analizador de SSE).
+    \end{itemize}
+    \item \texttt{/.env}: ubicado en la raíz. Contiene \texttt{OPENAI\_API\_KEY}
+    (obligatoria) y, opcionalmente, \texttt{OPENAI\_MODEL} (por defecto
+    \texttt{gpt-4o-mini}) y \texttt{EXECUTION\_TIMEOUT} (por defecto
+    \texttt{20} segundos).
+\end{itemize}
+
+\subsection{Componentes del frontend}
+
+\begin{itemize}
+    \item \textbf{PromptInput}: área de texto con ejemplos sugeridos y envío
+    mediante el atajo de teclado Cmd+Enter.
+    \item \textbf{ScriptPreview}: muestra el \textit{script} generado junto con
+    las acciones Ejecutar, Ajustar y Descartar.
+    \item \textbf{TerminalBlock}: bloque de código con numeración de líneas y
+    resaltado ligero por expresiones regulares para \texttt{bash}, \texttt{sh}
+    y \texttt{sql}.
+    \item \textbf{ExecutionStream}: progreso de la ejecución paso a paso en
+    tiempo real, alimentado por SSE.
+    \item \textbf{ResultsPanel}: presenta el resultado con \texttt{stdout} y
+    \texttt{stderr}, y un conmutador entre vista formateada y vista cruda.
+    \item \textbf{OutputRenderer}: formateo inteligente de la salida (detecta la
+    salida de \texttt{ps aux} y la convierte en una tabla de procesos
+    interactiva; en otro caso, vista de líneas numeradas).
+    \item \textbf{GeneratingSkeleton}: marcador de carga con efecto
+    \textit{shimmer} durante la generación.
+    \item \textbf{ErrorBanner}: notificación de error descartable.
+    \item \textbf{Sidebar}: barra lateral con el historial de sesiones, puntos
+    de estado y marcas de tiempo relativas.
+\end{itemize}
+
+% ============================================================
+% 6. API
+% ============================================================
+\section{Interfaz de programación (API)}
+
+El backend expone cuatro \textit{endpoints} bajo el prefijo \texttt{/api}.
+
+\begin{table}[H]
+\centering
+\caption{Endpoints de la API REST.}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} \\
+\midrule
+\texttt{POST} & \texttt{/api/generate} & Genera un \textit{script} a partir de un \textit{prompt}. \\
+\texttt{POST} & \texttt{/api/refine}   & Revisa un \textit{script} previo según el \textit{feedback} del usuario. \\
+\texttt{POST} & \texttt{/api/execute}  & Ejecuta el \textit{script} y transmite eventos SSE. \\
+\texttt{GET}  & \texttt{/api/health}   & Verifica el estado del servicio y el modelo activo. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{itemize}
+    \item \texttt{/api/generate}: recibe \texttt{\{ "prompt": "..." \}} y
+    devuelve \texttt{\{ "id", "script", "explanation", "language" \}}.
+    \item \texttt{/api/refine}: recibe el \textit{prompt} original, el
+    \textit{script} previo y la retroalimentación, y devuelve un \textit{script}
+    revisado completo (no un \textit{diff}).
+    \item \texttt{/api/execute}: recibe \texttt{\{ "script", "language" \}} y
+    devuelve un flujo SSE con eventos \texttt{start}, \texttt{step} (uno por
+    cada fase) y \texttt{done}.
+    \item \texttt{/api/health}: devuelve \texttt{\{ "status": "ok", "model":
+    "..." \}}.
+\end{itemize}
+
+% ============================================================
+% 7. LÓGICA DE IA
+% ============================================================
+\section{Lógica de inteligencia artificial}
+
+El núcleo inteligente del sistema reside en el diseño de los \textit{prompts} de
+sistema y en el procesamiento de la respuesta del modelo.
+
+\subsection{Prompt de sistema}
+
+El \textit{prompt} de sistema, redactado en español, instruye al modelo a actuar
+como un experto en automatización DevOps. Sus reglas más relevantes son:
+
+\begin{itemize}
+    \item Devolver siempre un \textit{script} ejecutable, válido y no vacío.
+    \item Generar sintaxis BSD/POSIX compatible con macOS, evitando extensiones
+    propias de GNU/Linux (por ejemplo, \texttt{ps aux -{}-sort} o
+    \texttt{grep -P}).
+    \item Preferir herramientas POSIX estándar y comandos seguros e
+    idempotentes, evitando operaciones destructivas salvo petición explícita.
+    \item Generar comandos de herramientas especializadas (Docker, kubectl,
+    systemctl, Terraform, etc.) únicamente cuando el usuario las menciona de
+    forma explícita.
+    \item Responder con un objeto JSON que contenga exactamente las claves
+    \texttt{script}, \texttt{explanation} (una oración técnica en español) y
+    \texttt{language} (uno de \texttt{bash}, \texttt{sh} o \texttt{sql}), sin
+    texto conversacional.
+\end{itemize}
+
+\subsection{Refinamiento}
+
+El \textit{endpoint} \texttt{/api/refine} emplea un \textit{prompt} de sistema
+distinto que recibe la solicitud original, el \textit{script} anterior y el
+\textit{feedback} del usuario, y produce una versión revisada completa
+manteniendo el mismo contrato JSON.
+
+\subsection{Análisis tolerante de la salida}
+
+La función \texttt{\_parse\_model\_output} interpreta la respuesta del modelo de
+forma robusta: primero intenta analizar el JSON; si falla, busca un bloque de
+código delimitado por comillas invertidas; y, como último recurso, trata todo el
+texto como el \textit{script}. Esto evita que pequeñas desviaciones en el
+formato rompan el flujo.
+
+% ============================================================
+% 8. SEGURIDAD Y EJECUCIÓN
+% ============================================================
+\section{Seguridad y motor de ejecución}
+
+Dado que el sistema ejecuta código en la máquina anfitriona, la seguridad es una
+preocupación central. El motor de ejecución aplica varias salvaguardas antes y
+durante la ejecución.
+
+\subsection{Validación de patrones peligrosos}
+
+Antes de ejecutar, el \textit{script} se contrasta contra una lista de patrones
+peligrosos mediante expresiones regulares. Entre ellos se incluyen
+\texttt{rm -rf /}, las \textit{fork bombs} clásicas, \texttt{mkfs}, escrituras
+crudas con \texttt{dd} hacia dispositivos, \texttt{shutdown}, \texttt{reboot} y
+redirecciones hacia \texttt{/dev/sda}. Si se detecta una coincidencia, la
+ejecución se rechaza de inmediato.
+
+\subsection{Verificación de herramientas}
+
+A continuación, el sistema analiza el \textit{script} para detectar los comandos
+externos referenciados y comprueba —mediante \texttt{shutil.which}— que estén
+instalados. Si falta alguna herramienta (por ejemplo, \texttt{docker} o
+\texttt{kubectl}), se informa al usuario antes de gastar un \textit{subproceso},
+sugiriendo reformular la tarea con utilidades disponibles.
+
+\subsection{Ejecución controlada}
+
+Los \textit{scripts} de shell se ejecutan mediante
+\texttt{subprocess.run(["/bin/bash", "-c", script])} con un \textit{timeout}
+configurable (20 segundos por defecto). Las consultas SQL se ejecutan de forma
+simulada, devolviendo una salida controlada. Cada fase del proceso —validación,
+verificación, preparación del entorno, ejecución y recolección de salida— se
+emite como un evento SSE, de modo que el cliente puede mostrar el avance en
+tiempo real.
+
+% ============================================================
+% 9. FLUJO DE TRABAJO
+% ============================================================
+\section{Flujo de trabajo}
+
+El ciclo completo de interacción, desde la instrucción hasta el resultado, sigue
+estos pasos:
+
+\begin{enumerate}
+    \item El usuario introduce una tarea en lenguaje natural en
+    \textbf{PromptInput}.
+    \item El frontend invoca \texttt{POST /api/generate} con el \textit{prompt}.
+    \item El backend consulta a OpenAI con el \textit{prompt} de sistema y el
+    modo de respuesta JSON.
+    \item OpenAI devuelve \texttt{\{ "script", "explanation", "language" \}}.
+    \item El backend valida o analiza la salida y la regresa con un \texttt{id}
+    generado.
+    \item El frontend entra en la fase \texttt{suggested}: muestra el
+    \textit{script} en un \textbf{TerminalBlock}, la explicación y tres
+    acciones:
+    \begin{itemize}
+        \item \textbf{Ejecutar}: aprueba y ejecuta el \textit{script}.
+        \item \textbf{Ajustar}: abre un área de refinamiento que envía el
+        \textit{feedback} a \texttt{/api/refine} y reemplaza el \textit{script}.
+        \item \textbf{Descartar}: regresa al estado inicial.
+    \end{itemize}
+    \item Al aprobar, el frontend llama a \texttt{POST /api/execute} y entra en
+    la fase \texttt{executing}.
+    \item El backend transmite eventos SSE: valida seguridad, comprueba
+    herramientas, ejecuta el \textit{script} y recolecta la salida.
+    \item El frontend renderiza cada paso en \textbf{ExecutionStream} en tiempo
+    real.
+    \item Al finalizar, \textbf{ResultsPanel} muestra el código de salida, la
+    duración, \texttt{stdout} (formateado o crudo) y \texttt{stderr}.
+    \item Las sesiones se registran en la \textbf{Sidebar} con indicadores de
+    estado.
+\end{enumerate}
+
+\subsection{Máquina de estados}
+
+La página principal del frontend modela el flujo mediante una unión
+discriminada de fases:
+\[
+\texttt{idle} \rightarrow \texttt{generating} \rightarrow \texttt{suggested}
+\rightarrow \texttt{executing} \rightarrow \texttt{finished}
+\]
+La fase \texttt{suggested} admite además un subestado opcional de refinamiento
+(\texttt{refining}).
+
+% ============================================================
+% 10. DISEÑO DE LA INTERFAZ
+% ============================================================
+\section{Diseño de la interfaz}
+
+La interfaz adopta una estética moderna de terminal/DevOps:
+
+\begin{itemize}
+    \item \textbf{Modo oscuro} exclusivo, con fondo \texttt{\#09090b} y fuentes
+    monoespaciadas para el código.
+    \item \textbf{Glassmorphism}: tarjetas con \texttt{backdrop-blur-sm},
+    bordes sutiles (\texttt{border-white/10}) y color de acento esmeralda.
+    \item \textbf{Animaciones} con Framer Motion: transiciones con
+    \texttt{AnimatePresence}, entradas escalonadas, deslizamiento y aparición
+    gradual, y estados de carga.
+    \item \textbf{Fondo} construido con pseudo-elementos \texttt{::before}
+    (gradientes radiales en índigo y esmeralda) y \texttt{::after} (rejilla CSS
+    de 48 px).
+    \item \textbf{Texto} de la interfaz íntegramente en español.
+\end{itemize}
+
+% ============================================================
+% 11. EJECUCIÓN LOCAL
+% ============================================================
+\section{Ejecución local}
+
+Para levantar el sistema en un entorno de desarrollo se requieren dos terminales.
+
+\subsection{Backend (puerto 8000)}
+
+\begin{lstlisting}[language=bash]
+cd backend
+source .venv/bin/activate
+python app.py
+\end{lstlisting}
+
+\subsection{Frontend (puerto 3000)}
+
+\begin{lstlisting}[language=bash]
+cd frontend
+npm run dev
+\end{lstlisting}
+
+Una vez ambos servicios estén activos, la aplicación es accesible en
+\texttt{http://localhost:3000} y consume la API en
+\texttt{http://localhost:8000}.
+
+% ============================================================
+% 12. CONCLUSIONES
+% ============================================================
+\section{Conclusiones}
+
+Orbit demuestra cómo un modelo de lenguaje puede integrarse de forma segura y
+útil dentro de un flujo de trabajo de administración de sistemas. Más allá de la
+mera generación de texto, el proyecto aporta valor mediante tres decisiones de
+diseño clave: la \textbf{revisión humana obligatoria} antes de cualquier
+ejecución, las \textbf{salvaguardas de seguridad} que bloquean comandos
+destructivos y verifican la disponibilidad de herramientas, y la
+\textbf{retroalimentación en tiempo real} que transparenta cada fase del
+proceso.
+
+Desde el punto de vista de los sistemas distribuidos, el proyecto ejercita la
+comunicación cliente-servidor sobre HTTP, el manejo de políticas de origen
+cruzado (CORS), el \textit{streaming} unidireccional mediante \textit{Server-Sent
+Events} y la coordinación de una máquina de estados entre dos procesos
+independientes.
+
+Como trabajo futuro, el sistema podría extenderse con la conexión a una base de
+datos real para las consultas SQL, la persistencia del historial de sesiones, la
+autenticación de usuarios y la ejecución de los \textit{scripts} dentro de
+contenedores aislados para reforzar aún más las garantías de seguridad.
+
+\end{document}

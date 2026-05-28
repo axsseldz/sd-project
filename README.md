@@ -1,8 +1,8 @@
-# DevOps Task Simulator
+# Orbit — DevOps Task Simulator
 
-AI-powered middleware that turns natural-language requests into executable DevOps scripts and commands.
+AI-powered middleware that turns natural-language requests into executable DevOps scripts and commands. Describe a task, review the generated script, optionally refine it, then execute it — all from the browser with real-time streaming output.
 
-Backend is Flask + Google Gemini. Frontend is Next.js (App Router) + TypeScript + Tailwind.
+Backend is Flask + OpenAI. Frontend is Next.js 16 (App Router) + TypeScript + Tailwind CSS v4.
 
 ---
 
@@ -10,7 +10,7 @@ Backend is Flask + Google Gemini. Frontend is Next.js (App Router) + TypeScript 
 
 - **Python** 3.10+
 - **Node.js** 18+ and **npm**
-- A **Google Gemini API key** — create one at https://aistudio.google.com/apikey
+- An **OpenAI API key** — create one at https://platform.openai.com/api-keys
 
 ---
 
@@ -21,12 +21,12 @@ Backend is Flask + Google Gemini. Frontend is Next.js (App Router) + TypeScript 
 Create a `.env` file at the **root** of the project (next to this README):
 
 ```env
-GEMINI_API_KEY=your_key_here
-# Optional — override the default model
-# GEMINI_MODEL=gemini-2.5-flash
+OPENAI_API_KEY=your_key_here
+# Optional — override the default model (default: gpt-4o-mini)
+# OPENAI_MODEL=gpt-4o
+# Optional — script execution timeout in seconds (default: 20)
+# EXECUTION_TIMEOUT=30
 ```
-
-If you see a `429 RESOURCE_EXHAUSTED` with `limit: 0`, your free-tier project does not include that model. Try `gemini-2.5-flash` or `gemini-2.5-flash-lite` via `GEMINI_MODEL`.
 
 ### 2. Backend (Flask, port 8000)
 
@@ -38,10 +38,14 @@ pip install -r requirements.txt
 python app.py
 ```
 
-The API will be live at `http://localhost:8000` with two endpoints:
+The API will be live at `http://localhost:8000` with these endpoints:
 
-- `POST /api/generate` — body `{ "prompt": "..." }` → `{ "script": "...", "explanation": "..." }`
-- `GET /api/health` — returns `{ "status": "ok" }`
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/generate` | Generate a script from a natural-language prompt |
+| `POST` | `/api/refine` | Refine a previously generated script with feedback |
+| `POST` | `/api/execute` | Execute a script and stream results via SSE |
+| `GET` | `/api/health` | Health check — returns `{ "status": "ok" }` |
 
 ### 3. Frontend (Next.js, port 3000)
 
@@ -59,69 +63,88 @@ The frontend talks to `http://localhost:8000` by default. To point at a differen
 
 ---
 
+## How it works
+
+1. **Describe** — type a task in natural language (e.g. "Mostrar uso de disco").
+2. **Review** — the AI generates a script; you see it syntax-highlighted in a terminal block with an explanation.
+3. **Refine** *(optional)* — click "Ajustar" and describe what to change. The AI rewrites the full script.
+4. **Execute** — click "Ejecutar" to run the script locally. Safety checks block dangerous patterns and missing tools before execution.
+5. **Results** — stdout and stderr stream in real-time. Output is formatted with smart views (e.g. `ps aux` output renders as an interactive process table).
+
+---
+
 ## Project structure
 
 ```
 .
-├── .env                   # GEMINI_API_KEY (root-level, gitignored)
+├── .env                        # OPENAI_API_KEY (root-level, gitignored)
 ├── backend/
-│   ├── app.py             # Flask app + Gemini client (port 8000)
-│   └── requirements.txt
+│   ├── app.py                  # Flask app, OpenAI client, execution engine, safety guards
+│   └── requirements.txt        # flask, flask-cors, python-dotenv, openai
 └── frontend/
-    ├── app/               # Next.js App Router pages + layout
-    ├── components/        # PromptInput, ResultCard, TerminalBlock, TypingText, ErrorBanner
-    └── lib/               # api.ts (typed fetch client), cn.ts (class merger)
+    ├── app/                    # Next.js App Router — page.tsx (phase state machine), layout.tsx, globals.css
+    ├── components/
+    │   ├── PromptInput.tsx      # Textarea with example chips and ⌘Enter submit
+    │   ├── ScriptPreview.tsx    # Script display with Ejecutar / Ajustar / Descartar actions
+    │   ├── TerminalBlock.tsx    # Syntax-highlighted code block with line numbers
+    │   ├── ExecutionStream.tsx  # Real-time step-by-step execution progress (SSE)
+    │   ├── ResultsPanel.tsx     # Execution results — stdout/stderr with pretty/raw toggle
+    │   ├── OutputRenderer.tsx   # Smart output formatting (ps-style table, numbered lines)
+    │   ├── GeneratingSkeleton.tsx # Shimmer loading placeholder
+    │   ├── ErrorBanner.tsx      # Dismissible error notification
+    │   └── Sidebar.tsx          # Session history with status indicators
+    └── lib/
+        ├── api.ts               # Typed fetch client with SSE stream parser
+        └── cn.ts                # clsx + tailwind-merge class merger
 ```
 
 ---
 
 ## Things to ask the system
 
-Simple prompts to try first:
+### Bash / macOS
 
-### Bash
-
-- List all files in the current directory.
-- Show disk usage of the home folder.
-- Find files larger than 100MB.
-- Delete all `.tmp` files in `/tmp`.
-- Print the 10 most recent log lines from `/var/log/syslog`.
+- Mostrar uso de disco del home.
+- Procesos con más consumo de memoria.
+- Encontrar archivos mayores a 100MB.
+- Imprimir las últimas 10 líneas de /var/log/system.log.
+- Ver tiempo encendido del sistema.
 
 ### Docker
 
-- List all running containers.
-- Stop every running container.
-- Remove unused images.
-- Show logs of a container named `web`.
+- Listar contenedores en ejecución.
+- Detener todos los contenedores activos.
+- Eliminar imágenes sin uso.
+- Mostrar logs del contenedor `web`.
 
 ### Kubernetes
 
-- List all pods in all namespaces.
-- Restart a deployment named `api`.
-- Get the status of every node.
+- Listar todos los pods en todos los namespaces.
+- Reiniciar el deployment `api`.
+- Estado de todos los nodos.
 
 ### Git
 
-- Undo the last commit but keep the changes.
-- Delete a local branch named `feature-x`.
-- Show the last 5 commits.
+- Deshacer el último commit pero conservar los cambios.
+- Eliminar la rama local `feature-x`.
+- Mostrar los últimos 5 commits.
 
 ### SQL
 
-- Get the 10 most recent users from a `users` table.
-- Count rows in a table called `orders`.
-- Find duplicate emails in a `users` table.
+- Obtener los 10 usuarios más recientes de la tabla `users`.
+- Contar filas en la tabla `orders`.
+- Encontrar emails duplicados en `users`.
 
 ### Networking
 
-- Check if port 443 is open on `example.com`.
-- Show my public IP address.
-- Ping `google.com` 5 times.
+- Verificar si el puerto 443 está abierto en `example.com`.
+- Mostrar mi IP pública.
+- Hacer ping a `google.com` 5 veces.
 
 ---
 
 ## Tech stack
 
-- **Backend:** Python 3, Flask, `flask-cors`, `python-dotenv`, `google-genai`
-- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, lucide-react
-- **Model:** `gemini-2.5-flash` (default) — overridable via `GEMINI_MODEL`
+- **Backend:** Python 3, Flask, flask-cors, python-dotenv, openai
+- **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Lucide React
+- **Model:** `gpt-4o-mini` (default) — overridable via `OPENAI_MODEL`

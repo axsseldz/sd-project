@@ -1,0 +1,285 @@
+\documentclass[12pt,a4paper]{article}
+
+% ============================================================
+% PAQUETES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+% ============================================================
+% COLORES
+% ============================================================
+\definecolor{esmeralda}{HTML}{10B981}
+\definecolor{indigo}{HTML}{818CF8}
+\definecolor{grisOscuro}{HTML}{3A3A3A}
+\definecolor{grisSuave}{HTML}{F2F4F8}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=esmeralda,
+    urlcolor=esmeralda,
+    pdftitle={Guion de presentacion - Orbit},
+    pdfauthor={Equipo Orbit}
+}
+
+% ============================================================
+% ESTILOS
+% ============================================================
+\titleformat{\section}
+  {\Large\bfseries\color{esmeralda}}
+  {Slide \thesection}{1em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{indigo}}
+  {}{0em}{}
+
+\titlespacing*{\section}{0pt}{1.4em}{0.6em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.3em}
+
+\setlist[itemize]{leftmargin=1.3em,itemsep=2pt,topsep=2pt}
+
+\newtcolorbox{frasebox}{
+  colback=grisSuave,
+  colframe=esmeralda,
+  boxrule=0.5pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt
+}
+
+\newtcolorbox{tipbox}{
+  colback=white,
+  colframe=indigo,
+  boxrule=0.5pt,
+  arc=2pt,
+  left=8pt,right=8pt,top=4pt,bottom=4pt,
+  title=\textbf{Tip de presentacion},
+  fonttitle=\color{white}\bfseries,
+  coltitle=white,
+  colbacktitle=indigo
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{grisOscuro}{Orbit --- Guion de presentacion}}
+\fancyhead[R]{\small\textcolor{grisOscuro}{Sistemas Distribuidos 2026-1}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+% ============================================================
+% DOCUMENTO
+% ============================================================
+\begin{document}
+
+\begin{center}
+  {\Huge\bfseries\color{esmeralda} ORBIT}\\[6pt]
+  {\large Guion detallado de la presentacion}\\[2pt]
+  {\small Sistemas Distribuidos --- UABC --- Semestre 2026-1}\\[10pt]
+  \rule{0.6\linewidth}{0.4pt}
+\end{center}
+
+\vspace{0.5em}
+
+\noindent\textbf{Duracion estimada:} 10--12 minutos. \quad
+\textbf{Slides totales:} 13. \quad
+\textbf{Diagramas:} 2 (arquitectura y secuencia).
+
+\begin{tipbox}
+Habla pausado. No leas los slides palabra por palabra: usalos como apoyo visual mientras explicas con tus propias palabras. Las frases en cuadro verde son sugerencias para decir tal cual; el resto es para guiarte.
+\end{tipbox}
+
+% ============================================================
+\section{Portada --- ``Del lenguaje natural al comando que se ejecuta''}
+\subsection{Objetivo del slide}
+Romper el hielo, presentar al equipo y dejar clara en una sola frase la idea del proyecto.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Buenos dias. Somos el equipo de Orbit. Nuestro proyecto resuelve algo que nos pasa a todos los que usamos la terminal: saber que queremos hacer, pero no recordar exactamente como escribirlo. Orbit traduce lo que tu pides en espanol al comando que la computadora entiende, pero con una diferencia importante: tu siempre revisas antes de que se ejecute.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Presenta a los integrantes brevemente.
+  \item Menciona la materia y al docente.
+  \item No te extiendas mas de 45 segundos aqui.
+\end{itemize}
+
+% ============================================================
+\section{El problema --- ``Saber que quieres no es lo mismo que saber escribirlo''}
+\subsection{Objetivo del slide}
+Conectar con la audiencia: que sientan que el problema es real y cotidiano.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Cuando trabajas con la computadora a nivel terminal, hay tres problemas que aparecen una y otra vez. Primero, los comandos son dificiles de recordar: cada uno tiene reglas, simbolos, opciones. Segundo, copiar y pegar comandos de internet es riesgoso, porque un comando mal copiado puede borrar tus archivos o danar el sistema. Y tercero, no queda registro: si algo sale mal, no sabes que pediste ni que paso.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Si quieres, da un ejemplo personal: ``a mi me paso una vez que copie un comando que no era para mi sistema operativo y...''.
+  \item Cierra con: ``Orbit ataca estos tres problemas a la vez''.
+\end{itemize}
+
+% ============================================================
+\section{La idea --- ``Orbit: tres pasos simples''}
+\subsection{Objetivo del slide}
+Explicar el flujo completo en una sola idea: \textbf{Pides, Revisas, Ejecutas}.
+
+\subsection{Que decir}
+\begin{frasebox}
+``La forma en que Orbit funciona se resume en tres pasos. El primero es pedir: tu escribes en espanol lo que quieres hacer, como si le hablaras a una persona. El segundo es revisar: la inteligencia artificial te propone un comando con una explicacion, y tu decides si lo aceptas, si quieres ajustarlo, o si lo descartas. Y el tercero es ejecutar: el comando corre de forma controlada y ves el resultado al instante. Lo mas importante es esto: nada se ejecuta sin tu aprobacion. Siempre hay un humano en medio.''
+\end{frasebox}
+
+\begin{tipbox}
+Esta es la idea central. Si la audiencia solo se lleva una cosa de la presentacion, que sea esta: \textbf{Pides, Revisas, Ejecutas}.
+\end{tipbox}
+
+% ============================================================
+\section{Un ejemplo --- ``Asi se ve en la practica''}
+\subsection{Objetivo del slide}
+Aterrizar lo abstracto. Que vean un caso concreto de entrada y salida.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Para que se vea claro, este es un ejemplo real. El usuario escribe: muestrame los programas que mas memoria usan. Orbit responde con este comando: ps aux, sort por la cuarta columna, head. Lo importante no es que el usuario sepa lo que significa ese comando; lo importante es que ya no tiene que recordarlo. Solo dice que necesita, en espanol, y revisa la propuesta antes de que se ejecute.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Si la audiencia es tecnica, puedes explicar brevemente que hace cada parte del comando.
+  \item Si no lo es, no entres en detalles del comando; el punto es la traduccion.
+\end{itemize}
+
+% ============================================================
+\section{Arquitectura --- ``Tres piezas que se comunican''}
+\subsection{Objetivo del slide}
+Mostrar el diagrama de arquitectura. Que entiendan como estan organizadas las piezas.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Por dentro, Orbit tiene tres piezas que se comunican entre si. La primera es la pagina web, que es lo que el usuario ve y usa. La segunda es el servidor, que es el cerebro: recibe lo que tu pides, habla con la inteligencia artificial y se encarga de ejecutar el comando con seguridad. Y la tercera es OpenAI, que es la inteligencia artificial que transforma tu frase en un comando. Sigan el diagrama con la mirada: el usuario escribe en la pagina, la pagina manda al servidor, el servidor le pregunta a la IA, la IA regresa la propuesta, y solo cuando tu aprueba, el servidor ejecuta el comando en tu terminal.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Senala con el dedo o cursor cada caja del diagrama mientras lo explicas.
+  \item Recalca: ``la inteligencia artificial nunca toca la maquina; solo propone texto''.
+\end{itemize}
+
+% ============================================================
+\section{Las herramientas --- ``Con que esta hecho''}
+\subsection{Objetivo del slide}
+Mencionar el stack sin entrar en demasiado detalle.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Estas son las herramientas que usamos. Para la pagina web usamos Next.js y React, con un estilo de terminal en modo oscuro. Para el servidor usamos Python con Flask, que es liviano y facil de mantener. Para la inteligencia artificial usamos el modelo gpt-4o-mini de OpenAI, que es rapido y barato. Y para la configuracion, la llave de acceso a OpenAI vive en un archivo aparte, no en el codigo, por seguridad.''
+\end{frasebox}
+
+\begin{tipbox}
+No te detengas demasiado aqui (maximo 1 minuto). Es informacion de apoyo, no la idea principal.
+\end{tipbox}
+
+% ============================================================
+\section{Seguridad --- ``Para que nada se ejecute a ciegas''}
+\subsection{Objetivo del slide}
+Demostrar que pensamos en los riesgos y los controlamos.
+
+\subsection{Que decir}
+\begin{frasebox}
+``La seguridad fue una de nuestras prioridades. Tenemos dos capas. La primera es automatica: el servidor revisa el comando antes de correrlo y bloquea cosas peligrosas, como borrar todo el disco, apagar el sistema o formatear. Si la IA propone algo asi, el servidor lo rechaza antes de empezar. La segunda capa es humana: tu ves el comando y su explicacion antes de que se ejecute, y tu decides. Aparte de eso, hay un tiempo limite: si un comando tarda mas de 20 segundos, se detiene solo.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Refuerza: ``ningun sistema es 100\% seguro, pero el humano en el bucle es la salvaguarda principal''.
+\end{itemize}
+
+% ============================================================
+\section{El flujo completo --- ``Quien hace que, paso a paso''}
+\subsection{Objetivo del slide}
+Mostrar el diagrama de secuencia. Es el momento mas tecnico, pero contado simple.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Este diagrama muestra el orden exacto de las cosas. El usuario describe la tarea en la pagina. La pagina manda el texto al servidor. El servidor le pide el comando a OpenAI. OpenAI regresa la propuesta. El servidor se la muestra al usuario. Aqui ocurre la revision humana. Cuando el usuario da clic en Ejecutar, la pagina envia la aprobacion. El servidor revisa la seguridad, ejecuta el comando en la terminal y devuelve el resultado en vivo, paso a paso. Esto ultimo es importante: el resultado aparece en la pantalla a medida que va corriendo, no al final.''
+\end{frasebox}
+
+\begin{tipbox}
+Si vas con poco tiempo, salta los pasos intermedios y enfocate en: ``aprobacion, seguridad, ejecucion, resultado en vivo''.
+\end{tipbox}
+
+% ============================================================
+\section{Sistemas distribuidos --- ``Ideas del curso en el proyecto''}
+\subsection{Objetivo del slide}
+Conectar el proyecto con la materia. Esto es lo que el profesor quiere oir.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Este proyecto es un ejemplo de varias ideas de la materia. Primero, son dos programas separados que se hablan por internet: la pagina y el servidor son procesos independientes que se comunican por HTTP. Segundo, los resultados llegan en vivo: el servidor manda informacion al cliente poco a poco, no todo al final. Tercero, hay coordinacion de estados: la pagina sabe en que fase esta y se mantiene sincronizada con el servidor. Y cuarto, dependemos de un servicio externo, OpenAI, que esta en otro lado de internet, asi que tuvimos que manejar errores y tiempos de espera.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Este slide es clave si el profesor evalua por aplicacion de conceptos del curso.
+  \item Si quieres, agrega ejemplos concretos de la materia: ``como vimos en la unidad de comunicacion asincrona...''.
+\end{itemize}
+
+% ============================================================
+\section{Demo --- ``Como se prueba''}
+\subsection{Objetivo del slide}
+Preparar la demo en vivo (si la van a hacer) o explicar como correrlo.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Para que vean que esto funciona de verdad, estos son los pasos para levantarlo. Se levanta el servidor en el puerto 8000 con Python. Se levanta la pagina en el puerto 3000 con npm. Y se abre en el navegador. A continuacion les vamos a mostrar una demo en vivo.''
+\end{frasebox}
+
+\begin{tipbox}
+\textbf{Si haces demo en vivo:} ten todo precargado y probado antes. Ten un par de prompts listos para no improvisar. Si algo falla, ten una captura de pantalla de respaldo.
+\end{tipbox}
+
+% ============================================================
+\section{Cierre --- ``Que logramos y que sigue''}
+\subsection{Objetivo del slide}
+Cerrar con balance: lo que ya funciona y hacia donde podria crecer.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Para cerrar. Lo que ya funciona: traducir lenguaje natural a comandos validos, revision humana antes de cada ejecucion, bloqueo de comandos peligrosos y resultados en vivo mientras el comando corre. Lo que vendria despues si seguimos el proyecto: conectar una base de datos real, guardar historial por usuario, ejecutar en un entorno aun mas aislado como contenedores, y soporte para varios usuarios al mismo tiempo.''
+\end{frasebox}
+
+% ============================================================
+\section{Gracias --- ``Cierre y preguntas''}
+\subsection{Objetivo del slide}
+Cierre formal y apertura a preguntas.
+
+\subsection{Que decir}
+\begin{frasebox}
+``Eso es Orbit: pides, revisas, ejecutas. Gracias por su atencion. Estamos abiertos a preguntas.''
+\end{frasebox}
+
+\begin{itemize}
+  \item Mantente cerca de la laptop por si alguien pide ver algo especifico.
+  \item Si nadie pregunta, ten una pregunta lista para arrancar: ``si quieren les muestro como reacciona ante un comando peligroso''.
+\end{itemize}
+
+% ============================================================
+\vspace{1em}
+\hrule
+\vspace{0.6em}
+
+\begin{center}
+  \small\textcolor{grisOscuro}{
+    \textbf{Tips finales:}
+    Habla despacio. Mira a la audiencia, no a la pantalla.
+    Si te trabas, respira. El equipo se complementa entre si.
+  }
+\end{center}
+
+\end{document}
